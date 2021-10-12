@@ -4,9 +4,6 @@ import axios from 'axios'
 const Search = () => {
   const [term, setTerm] = useState('')
 
-  const URL =
-    'en.wikipedia.org/w/api.php?cation=query&list=search&format=json&srsearch=SEARCHTERM'
-
   const handleChange = (e) => {
     return setTerm(e.target.value)
   }
@@ -18,21 +15,31 @@ const Search = () => {
      * Way 1: With Function Expression
      */
     const search = async () => {
-      await axios.get(URL)
+      await axios.get('https://en.wikipedia.org/w/api.php', {
+        params: {
+          action: 'query',
+          list: 'search',
+          origin: '*',
+          format: 'json',
+          srsearch: term,
+        },
+      })
     }
+
+    search()
 
     /**
      * Way 2: With IFFE
      */
-    ;(async () => await axios.get(URL))()
+    // ;(async () => await axios.get(URL))()
 
     /**
      * Way 3: With promises
      */
-    axios
-      .get(URL)
-      .then((response) => console.log(response.data))
-      .catch((err) => console.log(err))
+    // axios
+    //   .get(URL)
+    //   .then((response) => console.log(response.data))
+    //   .catch((err) => console.log(err))
   }, [term])
 
   return (
