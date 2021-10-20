@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const Search = () => {
   const [term, setTerm] = useState('Programming')
+  const [debouncedTerm, setDebouncedTerm] = useState(term)
   const [results, setResults] = useState([])
 
   const handleChange = (e) => {
@@ -49,6 +50,45 @@ const Search = () => {
   /**
    * Use UseEffect to throttle the API Requests
    */
+  // useEffect(() => {
+  //   const search = async () => {
+  //     const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
+  //       params: {
+  //         action: 'query',
+  //         list: 'search',
+  //         origin: '*',
+  //         format: 'json',
+  //         srsearch: term,
+  //       },
+  //     })
+  //     setResults(data.query.search)
+  //   }
+
+  //   if (term && !results.length) {
+  //     search()
+  //   } else {
+  //     const timerId = setTimeout(() => {
+  //       if (term) search()
+  //     }, 1000)
+  //     return () => {
+  //       console.log(timerId)
+  //       clearTimeout(timerId)
+  //     }
+  //   }
+  // }, [term, results.length])
+
+  /**
+   * Optimizing the double API request to one by passing only one value to the dependency array
+   */
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedTerm(term)
+    }, 1000)
+    return () => {
+      clearTimeout(timerId)
+    }
+  }, [term])
+
   useEffect(() => {
     const search = async () => {
       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
@@ -57,24 +97,13 @@ const Search = () => {
           list: 'search',
           origin: '*',
           format: 'json',
-          srsearch: term,
+          srsearch: debouncedTerm,
         },
       })
       setResults(data.query.search)
     }
-
-    if (term && !results.length) {
-      search()
-    } else {
-      const timerId = setTimeout(() => {
-        if (term) search()
-      }, 1000)
-      return () => {
-        console.log(timerId)
-        clearTimeout(timerId)
-      }
-    }
-  }, [term, results.length])
+    search()
+  }, [debouncedTerm])
 
   const renderedResults = results.map((result) => {
     return (
