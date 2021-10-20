@@ -9,12 +9,47 @@ const Search = () => {
     return setTerm(e.target.value)
   }
 
+  // useEffect(() => {
+  //   /**
+  //    * Using Asynchronous Code in UseEffect with async and await
+  //    * This is recommended by the React Developers
+  //    * Way 1: With Function Expression
+  //    */
+  //   const search = async () => {
+  //     const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
+  //       params: {
+  //         action: 'query',
+  //         list: 'search',
+  //         origin: '*',
+  //         format: 'json',
+  //         srsearch: term,
+  //       },
+  //     })
+  //     setResults(data.query.search)
+  //   }
+
+  //   /**
+  //    * Way 2: With IFFE
+  //    */
+  //    (async () => await axios.get(URL))()
+
+  //   /**
+  //    * Way 3: With promises
+  //    */
+  //    axios
+  //     .get(URL)
+  //     .then((response) => console.log(response.data))
+  //     .catch((err) => console.log(err))
+
+  //   const timeoutId = setTimeout(() => {
+  //     if (term) search()
+  //     }, 500)
+  //   }, [term])
+
+  /**
+   * Use UseEffect to throttle the API Requests
+   */
   useEffect(() => {
-    /**
-     * Using Asynchronous Code in UseEffect with async and await
-     * This is recommended by the React Developers
-     * Way 1: With Function Expression
-     */
     const search = async () => {
       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
@@ -28,23 +63,18 @@ const Search = () => {
       setResults(data.query.search)
     }
 
-    /**
-     * Way 2: With IFFE
-     */
-    // ;(async () => await axios.get(URL))()
-
-    /**
-     * Way 3: With promises
-     */
-    // axios
-    //   .get(URL)
-    //   .then((response) => console.log(response.data))
-    //   .catch((err) => console.log(err))
-
-    const timeoutId = setTimeout(() => {
-      if (term) search()
-    }, 500)
-  }, [term])
+    if (term && !results.length) {
+      search()
+    } else {
+      const timerId = setTimeout(() => {
+        if (term) search()
+      }, 1000)
+      return () => {
+        console.log(timerId)
+        clearTimeout(timerId)
+      }
+    }
+  }, [term, results.length])
 
   const renderedResults = results.map((result) => {
     return (
