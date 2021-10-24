@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const Dropdown = ({ options, selected, onSelectedChange }) => {
   const [open, setOpen] = useState(false)
+  const ref = useRef()
 
   const renderedOptions = options.map((option) => {
     if (option.value === selected.value) return null
@@ -16,8 +17,31 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
     )
   })
 
+  useEffect(() => {
+    const onBodyClick = (e) => {
+      if (ref.current.contains(e.target)) return
+      setOpen(false)
+    }
+
+    /**
+     * Close dropdown when !options are clicked
+     */
+    document.body.addEventListener('click', onBodyClick, {
+      capture: true,
+    })
+
+    /**
+     * Cleanup: Does not add the listener when there is no Dropdown Component
+     */
+    return () => {
+      document.body.removeEventListener('click', onBodyClick, {
+        capture: true,
+      })
+    }
+  }, [])
+
   return (
-    <div className='ui form'>
+    <div ref={ref} className='ui form'>
       <div className='field'>
         <label className='label'>Select a Color</label>
         <div
