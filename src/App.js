@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 // import Accordion from './components/Accordion'
-import Dropdown from './components/Dropdown'
+// import Dropdown from './components/Dropdown'
 // import Search from './components/Search'
+import Translate from './components/Translate'
 // eslint-disable-next-line no-unused-vars
 import { items, options } from './mock/data'
 
 export default function App() {
-  const [selected, setSelected] = useState(options[0])
-  const [showDropdown, setShowDropDown] = useState(true)
+  // const [selected, setSelected] = useState(options[0])
+  // const [showDropdown, setShowDropDown] = useState(true)
 
   return (
     <div>
       {/* <Accordion items={items} /> */}
       {/* <Search /> */}
-      <button onClick={() => setShowDropDown(!showDropdown)}>
+      {/* <button onClick={() => setShowDropDown(!showDropdown)}>
         Toggle ShowDropdown
       </button>
 
@@ -23,7 +24,8 @@ export default function App() {
           onSelectedChange={setSelected}
           options={options}
         />
-      ) : null}
+      ) : null} */}
+      <Translate />
     </div>
   )
 }
