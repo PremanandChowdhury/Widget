@@ -42,4 +42,12 @@ export const dropDownOptions = [
     label: 'Hindi',
     value: 'hi',
   },
+  {
+    label: 'English',
+    value: 'en',
+  },
+  {
+    label: 'Spanish',
+    value: 'es',
+  },
 ]
