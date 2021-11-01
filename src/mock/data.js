@@ -31,7 +31,7 @@ export const options = [
 
 export const dropDownOptions = [
   {
-    label: 'African',
+    label: 'Afrikaans',
     value: 'af',
   },
   {
@@ -45,6 +45,18 @@ export const dropDownOptions = [
   {
     label: 'English',
     value: 'en',
+  },
+  {
+    label: 'Danish',
+    value: 'da',
+  },
+  {
+    label: 'French',
+    value: 'fr',
+  },
+  {
+    label: 'German',
+    value: 'de',
   },
   {
     label: 'Spanish',
