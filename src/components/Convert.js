@@ -4,6 +4,14 @@ const KEY = process.env.REACT_APP_GOOGLE_TRANSLATE_KEY
 
 const Convert = ({ language, text }) => {
   const [translated, setTranslated] = useState('')
+  const [debouncedText, setDebouncedText] = useState(text)
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setDebouncedText(text), 500)
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [text])
 
   useEffect(() => {
     const translateText = async () => {
@@ -12,7 +20,7 @@ const Convert = ({ language, text }) => {
         {},
         {
           params: {
-            q: text,
+            q: debouncedText,
             target: language.value,
             key: KEY,
           },
@@ -21,7 +29,7 @@ const Convert = ({ language, text }) => {
       setTranslated(data.data.translations[0].translatedText)
     }
     translateText()
-  }, [language, text, translated])
+  }, [language, debouncedText])
 
   return (
     <div>
