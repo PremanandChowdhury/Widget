@@ -5,6 +5,7 @@ import Search from './components/Search'
 import Translate from './components/Translate'
 import { items, options } from './mock/data'
 import Route from './components/Route'
+import Header from './components/Header'
 
 export default function App() {
   const [selected, setSelected] = useState(options[0])
@@ -12,10 +13,11 @@ export default function App() {
 
   return (
     <div style={{ margin: '0 10px' }}>
+      <Header />
       <Route path='/'>
         <Accordion items={items} />
       </Route>
-      <Route path='/list'>
+      <Route path='/dropdown'>
         <button onClick={() => setShowDropDown(!showDropdown)}>
           Toggle ShowDropdown
         </button>
@@ -28,7 +30,7 @@ export default function App() {
           />
         ) : null}
       </Route>
-      <Route path='/search'>
+      <Route path='/list'>
         <Search />
       </Route>
       <Route path='/translate'>
