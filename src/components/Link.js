@@ -2,6 +2,11 @@ import React from 'react'
 
 const Link = ({ className, href, children }) => {
   const onClickHandler = (e) => {
+    // Ctrl click link open to new Window
+    if (e.metaKey || e.ctrlKey) {
+      return
+    }
+
     e.preventDefault()
     window.history.pushState({}, '', href)
 
